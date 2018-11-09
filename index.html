@@ -1,83 +1,19 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>计算器的实现</title>
-	</head>
-	<script type="text/javascript">
-		function calCulate(val){
-			
-			var num = document.getElementById("t");
-			switch(val){
-				case "=":
-				num.value = eval(num.value);
-				
-				break;
-				
-				case "C":
-				num.value = "";
-				break;
-				
-				default:
-				  num.value =num.value+val;
-				break;
-			}
-			
-			
-		}
-	</script>
+<head> 
+<meta charset="utf-8"> 
+<title>投影转换</title> 
+</head>
+<body>
 	
-	<style type="text/css">
-		#sDiv{
-			text-align: center;
-			border: solid 1px;
-			width: 300px;
-			border-radius: 10px;
-			background-color: aqua;
-		}
-		#t{
-			border:solid 1px ;
-			width: 260px;
-			border-radius: 10px;
-			margin-top: 10px;
-			margin-bottom: 10px;
-			font-size: 20px;
-		}
-		input[type=button]{
-			border-radius: 5px;
-			width: 55px;
-			height: 30px;
-			margin: 2px;
-			font-size: 20px;
-		}
-		#equ{
-			width: 260px;
-			font - size: 30px;
-			margin-bottom: 10px;
-		}
-	</style>
+<h1>我的第一个 Web 页面</h1>
+<p id="demo">一个段落。</p>
+<button type="button" onclick="myFunction()">点击这里</button>
+<script>
+function myFunction(){
+	document.getElementById("demo").innerHTML="我的第一个 JavaScript 函数";
+}
+</script>
 	
-	<body>
-		<div id="sDiv">
- 
-		<input type="text" name="t" id="t" value="" /><br/>
-		<input type="button" name="" id="" value="1" onclick="calCulate(this.value)"/>
-		<input type="button" name="" id="" value="2" onclick="calCulate(this.value)"/>
-		<input type="button" name="" id="" value="3" onclick="calCulate(this.value)"/>
-		<input type="button" name="" id="" value="4" onclick="calCulate(this.value)"/><br />
-		<input type="button" name="" id="" value="5" onclick="calCulate(this.value)"/>
-		<input type="button" name="" id="" value="6" onclick="calCulate(this.value)"/>
-		<input type="button" name="" id="" value="7" onclick="calCulate(this.value)"/>
-		<input type="button" name="" id="" value="8" onclick="calCulate(this.value)"/><br />
-		<input type="button" name="" id="" value="9" onclick="calCulate(this.value)"/>
-		<input type="button" name="" id="" value="0" onclick="calCulate(this.value)"/>
-		<input type="button" name="" id="" value="." onclick="calCulate(this.value)"/>
-		<input type="button" name="" id="" value="C" onclick="calCulate(this.value)"/><br/>
-		<input type="button" name="" id="" value="+" onclick="calCulate(this.value)"/>
-		<input type="button" name="" id="" value="-" onclick="calCulate(this.value)"/>
-		<input type="button" name="" id="" value="*" onclick="calCulate(this.value)"/>
-		<input type="button" name="" id="" value="/" onclick="calCulate(this.value)"/><br/>
-		<input type="button" name="" id="equ" value="=" onclick="calCulate(this.value)"/>
-		</div>
-	</body>
+</body>
 </html>
