@@ -1,19 +1,39 @@
 <!DOCTYPE html>
 <html>
-<head> 
-<meta charset="utf-8"> 
-<title>投影转换</title> 
+<head> 
+<meta charset="utf-8"> 
+<title>投影转换</title> 	
 </head>
 <body>
+	<div id="container" style="100%">
+		<div id="header" style="text-align:center;background-color:#FFA500;">
+			<h1 style="margin-bottom:0;">投影转换</h1>
+		</div>
 	
-<h1>我的第一个 Web 页面</h1>
-<p id="demo">一个段落。</p>
-<button type="button" onclick="myFunction()">点击这里</button>
-<script>
-function myFunction(){
-	document.getElementById("demo").innerHTML="我的第一个 JavaScript 函数";
-}
-</script>
+		<div id="menu" style="width:20%;height:400px;background-color:#FFD700;
+					  float:left;text-align:center;line-height:100px;">
+			<b>输入</b><br>
+			<input type="text" id="input_x"><br>
+			<input type="text" id="input_y"><br>
+			<button onclick="printresult()">转换</button>
+		</div>
 	
+		<div id="content" style="width:80%;height:400px;background-color:#EEEEEE;
+						 float:left;text-align:center;line-height:400px;">
+			<p id ="res">结果</p>
+		</div>
+		<div id="footer" style="background-color:#FFA500;clear:both;text-align:center;">
+			版权 © https://wangchengyin.github.io/
+		</div>
+
+	</div>
+ 	<script>
+		function printresult(){
+			var input1=Number(document.getElementById("input_x").value);
+			var input2=Number(document.getElementById("input_y").value);
+			var result = document.getElementById("res");
+			result.innerHTML=input2+input1;
+		}
+	 </script>
 </body>
 </html>
