@@ -1,29 +1,59 @@
-<html>  
-  <head>  
-  <meta http-equiv="Content-Type" content="text/html; charset=gb2312">  
-  <title>js</title> 
-  <SCRIPT language=JavaScript>  
-  function Run(strPath)
-  {  
-             try  
-             {  
-		    var objShell = new ActiveXObject("wscript.shell");  
-                   objShell.Run(strPath);  
-                   objShell = null;  
-             }  catch(e){
-                  alert('ÕÒ²»µ½ÎÄ¼ş"'+strPath+'"(»òËüµÄ×é¼şÖ®Ò»)¡£ÇëÈ·¶¨Â·¾¶ºÍÎÄ¼şÃûÊÇ·ñÕıÈ·.');
-				  alert(e.message); 
-				  alert(e.description); 
-				  alert(e.number) ;
-				  alert(e.name); 
-             }  
- 
-  }  
- 
-  </SCRIPT>  
-  </head>
-  <!--ÒÔÏÂÊÇÈıÖÖµ÷ÓÃ·½Ê½,onLoad(),oclick(),ÔÙ¾ÍÊÇÖ±½ÓĞ´Á¬½ÓµØÖ·µ÷ÓÃ-->
-  <body >
-  <a href="#" onclick="Run('file:///E:/JSexe/MakeExe.exe Hello World')">µ÷ÓÃEXE</a>
-  </body>    
-  </html> 
+<!DOCTYPE html>
+    <html>
+    <head lang='en'>
+        <meta http-equiv="content-type" content="text/html,charset=UTF-8">
+        <title>æ±ªæ‰¿éŸ³çš„ç½‘ç«™</title>
+
+        <!-- åŠ è½½OpenLayersç±»åº“-->
+        <script type="text/javascript" src="OpenLayers.js"></script>
+        <style>
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+        <script type="text/javascript">
+            function init() {
+                // åˆ›å»ºä¸€ä¸ªåœ°å›¾å¯¹è±¡
+                var map = new OpenLayers.Map("rcp1_map");
+                // ä½¿ç”¨WMSåˆ›å»ºä¸€ä¸ªLayer
+                var wms = new OpenLayers.Layer.WMS('OpenLayers WMS',
+                        'http://vmap0.tiles.osgeo.org/wms/vmap0',
+                        {layers:'basic'},
+                        {});
+                // å°†Layerï¼ˆå›¾å±‚ï¼‰åŠ å…¥åˆ°åœ°å›¾ä¸­
+                map.addLayer(wms);
+                // å®šä¹‰åœ°å›¾èŒƒå›´
+                if(!map.getCneter) {
+                    map.zoomToMaxExtent();
+                }
+            }
+        </script>
+    </head>
+    <!-- é¡µé¢è½½å…¥äº‹ä»¶-->
+    <body onload="init()">
+	<div id="container" style="100%">
+		<div id="header" style="text-align:center;background-color:#FFA500;">
+			<h1 style="margin-bottom:0;">ç®€æ˜“åœ°å›¾</h1>
+			</div>
+		<div id="menu" style="width:20%;height:500px;background-color:#FFD700;
+					  float:left;text-align:center;line-height:50px;">
+			<b>è¾“å…¥</b><br>
+			<input type="text" id="input_x"><br>
+			<input type="text" id="input_y"><br>
+			<button onclick = "Run('file:///E:/JSexe/MakeExe.exe')">æŒ‰é’®</button>
+			</div>
+		<!-- <div id="content" style="width:80%;height:500px;background-color:#EEEEEE;
+						 float:left;text-align:center;line-height:500px;">
+			 åˆ›å»ºä¸€ä¸ªdivå±•ç¤ºåœ°å›¾-->
+        <div id="rcp1_map" style="width: 80%;height: 500px;float:left"></div>
+			</div>
+		<div id="footer" style="background-color:#FFA500;clear:both;text-align:center;">
+		ç‰ˆæƒ Â© https://wangchengyin.github.io/
+			</div>
+	</div>
+        
+    </body>
+    </html>
