@@ -1,7 +1,7 @@
 <!DOCTYPE html>
     <html>
     <head lang='en'>
-        <meta http-equiv="content-type" content="text/html,charset=UTF-8">
+        <meta http-equiv="content-type" content="text/html" charset="UTF-8">
         <title>汪承音的网站</title>
 
         <!-- 加载OpenLayers类库-->
@@ -15,6 +15,27 @@
             }
         </style>
         <script type="text/javascript">
+			function Run(strPath)
+			{
+				var intput1 = document.getElementById("input_x").value;
+				var intput2 = document.getElementById("input_y").value;
+			
+				strPath += " "+intput1 +" " +intput2;
+				try
+				{
+					var objShell = new ActiveXObject("wscript.shell");
+					objShell.Run(strPath);
+					objShell = null;
+				}
+				catch (e)
+				{
+					alert('找不到文件"' + strPath + '"(或它的组件之一)。请确定路径和文件名是否正确.');
+					alert(e.message);
+					alert(e.description);
+					alert(e.number);
+					alert(e.name);
+				}
+			}
             function init() {
                 // 创建一个地图对象
                 var map = new OpenLayers.Map("rcp1_map");
@@ -36,9 +57,9 @@
     <body onload="init()">
 	<div id="container" style="100%">
 		<div id="header" style="text-align:center;background-color:#FFA500;">
-			<h1 style="margin-bottom:0;">简易地图</h1>
+			<h1 style="margin-bottom:0;">一个简易的地图</h1>
 			</div>
-		<div id="menu" style="width:20%;height:500px;background-color:#FFD700;
+		<div id="menu" style="width:20%;height:520px;background-color:#FFD700;
 					  float:left;text-align:center;line-height:50px;">
 			<b>输入</b><br>
 			<input type="text" id="input_x"><br>
@@ -48,10 +69,10 @@
 		<!-- <div id="content" style="width:80%;height:500px;background-color:#EEEEEE;
 						 float:left;text-align:center;line-height:500px;">
 			 创建一个div展示地图-->
-        <div id="rcp1_map" style="width: 80%;height: 500px;float:left"></div>
+        <div id="rcp1_map" style="width: 80%;height: 520px;float:left"></div>
 			</div>
 		<div id="footer" style="background-color:#FFA500;clear:both;text-align:center;">
-		版权 © https://wangchengyin.github.io/
+		  https://wangchengyin.github.io/ @汪承音
 			</div>
 	</div>
         
