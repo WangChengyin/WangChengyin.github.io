@@ -2,10 +2,39 @@
     <html>
     <head lang='en'>
         <meta http-equiv="content-type" content="text/html" charset="UTF-8">
-        <title>汪承音的网站</title>
-
-        <!-- 加载OpenLayers类库-->
-        <script type="text/javascript" src="OpenLayers.js"></script>
+        <link rel="stylesheet" href="ol.css" type = "text/css">
+		<script src="ol.js"></script>
+		<title>汪承音的网站</title>
+	</head>
+	<body>
+		<div id="container" style="100%">
+			<div id="header" style="text-align:center;background-color:rgb(	255,215,0);">
+				<h2 style="margin-bottom:0;">一个简易的地图</h2>
+				</div>
+			<div id="menu" style="width:15%;height:540px;background-color:rgb(240,230,140);
+						float:left;text-align:center;line-height:20px;">
+					
+				    <form>
+						<label>投影方式 </label>
+						<select id="projection">
+							<option value="EPSG:4326">EPSG:4326</option>
+							<option value="EPSG:3857">EPSG:3857</option>
+						</select><br>
+						<label>精度</label>
+						<input id="precision" type="number" min="0" max="12" value="4"/>
+					</form>
+					<br><br><br><br><br><button id="fly">飞行到广州</button>
+				</div>
+			<!-- <div id="content" style="width:80%;height:500px;background-color:#EEEEEE;
+							float:left;text-align:center;line-height:500px;">
+				创建一个div展示地图-->
+			<div id="map" style="width: 85%;height: 540px;float:left"></div>
+		</div>
+			<div id="mouse-position" style="width:30%;height:20px;background-color:rgb(	255,215,0);text-align:left-side;float:left;"></div>
+			<div id="footer" style="width:70%;height:20px;background-color:rgb(	255,215,0);text-align:center;float:left;">
+			https://wangchengyin.github.io/ @汪承音
+				</div>
+		</div>
         <style>
             html, body {
                 width: 100%;
@@ -14,67 +43,87 @@
                 padding: 0;
             }
         </style>
-        <script type="text/javascript">
-			function Run(strPath)
-			{
-				var intput1 = document.getElementById("input_x").value;
-				var intput2 = document.getElementById("input_y").value;
+         <script>
+			var mousePositionControl = new ol.control.MousePosition
+			({
+				coordinateFormat: ol.coordinate.createStringXY(4),
+				projection: 'EPSG:4326',
+				// comment the following two lines to have the mouse position
+				// be placed within the map.
+				className: 'custom-mouse-position',
+				target: document.getElementById('mouse-position'),
+				undefinedHTML: '&nbsp;'
+			});
+	
+			var scaleLineControl = new ol.control.ScaleLine({
+				units:"metric"
+				});
+			var map = new ol.Map
+			({
+				controls: ol.control.defaults().extend([scaleLineControl]),
+				controls: ol.control.defaults
+				({
+					attributionOptions: 
+					({
+						collapsible: false
+					})
+				}).extend([mousePositionControl]),
+				layers: 
+				[
+					new ol.layer.Tile
+					({
+						source: new ol.source.OSM()
+					})
+				],
+				target: 'map',
+				view: new ol.View
+				({
+					center: [12950000, 4860000],
+					zoom: 7
+				})
+			});
+
+			var guangzhou=ol.proj.fromLonLat([113.15,23.08]);
 			
-				strPath += " "+intput1 +" " +intput2;
-				try
-				{
-					var objShell = new ActiveXObject("wscript.shell");
-					objShell.Run(strPath);
-					objShell = null;
+			/*doucument.getElementById('fly').onclick=function(){
+				var duration = 2000;
+				var start = +new Date();
+				var pan = ol.animation.pan({
+				duration:duration,
+				source:view.getCenter(),
+				start:start
+				});
+				var bounce = ol.animation.bounce({
+				duration:duration,
+				resolution:4*view.getresolution(),
+				start:start
+				});
+				map.beforeRender(pan,bounce);
+				view.setCenter(guangzhou);
+			};
+			function bounce(t){
+				var s=7.5625,p=2.75,l;
+				if(t<(1/p)){l=s*t*t;}else{
+				l=s*t*t+0.987375;
 				}
-				catch (e)
-				{
-					alert('找不到文件"' + strPath + '"(或它的组件之一)。请确定路径和文件名是否正确.');
-					alert(e.message);
-					alert(e.description);
-					alert(e.number);
-					alert(e.name);
-				}
-			}
-            function init() {
-                // 创建一个地图对象
-                var map = new OpenLayers.Map("rcp1_map");
-                // 使用WMS创建一个Layer
-                var wms = new OpenLayers.Layer.WMS('OpenLayers WMS',
-                        'http://vmap0.tiles.osgeo.org/wms/vmap0',
-                        {layers:'basic'},
-                        {});
-                // 将Layer（图层）加入到地图中
-                map.addLayer(wms);
-                // 定义地图范围
-                if(!map.getCneter) {
-                    map.zoomToMaxExtent();
-                }
-            }
-        </script>
-    </head>
-    <!-- 页面载入事件-->
-    <body onload="init()">
-	<div id="container" style="100%">
-		<div id="header" style="text-align:center;background-color:#FFA500;">
-			<h1 style="margin-bottom:0;">一个简易的地图</h1>
-			</div>
-		<div id="menu" style="width:20%;height:520px;background-color:#FFD700;
-					  float:left;text-align:center;line-height:50px;">
-			<b>输入</b><br>
-			<input type="text" id="input_x"><br>
-			<input type="text" id="input_y"><br>
-			<button onclick = "Run('file:///E:/JSexe/MakeExe.exe')">按钮</button>
-			</div>
-		<!-- <div id="content" style="width:80%;height:500px;background-color:#EEEEEE;
-						 float:left;text-align:center;line-height:500px;">
-			 创建一个div展示地图-->
-        <div id="rcp1_map" style="width: 80%;height: 520px;float:left"></div>
-			</div>
-		<div id="footer" style="background-color:#FFA500;clear:both;text-align:center;">
-		  https://wangchengyin.github.io/ @汪承音
-			</div>
-	</div>
+				return l;
+			}*/
+			var projectionSelect = document.getElementById('projection');
+			//addEventListener()方法用于向指定元素添加事件。
+			projectionSelect.addEventListener('change', 
+				function(event){
+					//event.target可获得触发事件的元素
+					mousePositionControl.setProjection(ol.proj.get(event.target.value));
+				});
+				//map.addControl(new ol.control.ScaleLine());
+			var precisionInput = document.getElementById('precision');
+			precisionInput.addEventListener('change', 
+				function(event){
+					var format = ol.coordinate.createStringXY(event.target.valueAsNumber);
+					mousePositionControl.setCoordinateFormat(format);
+				});
+			</script>
+	
         
     </body>
     </html>
