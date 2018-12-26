@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+    <html>
+    <head lang='en'>
+        <meta http-equiv="content-type" content="text/html" charset="UTF-8">
+        <link rel="stylesheet" href="ol.css" type = "text/css">
+		<script src="ol.js"></script>
+		<title>汪承音的网站</title>
+	</head>
+	<body>
+		<div id="container" style="100%">
+			<div id="header" style="text-align:center;background-color:rgb(	255,215,0);">
+				<h2 style="margin-bottom:0;">一个简易的地图</h2>
+				</div>
+			<div id="menu" style="width:15%;height:540px;background-color:rgb(240,230,140);
+						float:left;line-height:30px;">
+					
+				    <form style="text-align:center;">
+						<label>投影方式 </label>
+						<select id="projection">
+							<option value="EPSG:4326">EPSG:4326</option>
+							<option value="EPSG:3857">EPSG:3857</option>
+						</select><br>
+						<label>坐标精度</label>
+						<input id="precision" type="number" min="0" max="12" value="4"/>
+					</form>
+					<hr style="color:rgb(255,69,0);size:2">
+		<!--*******************************分割线********************************************-->
+					<label>计算方式: </label>
+						<select id="comp_model">
+							<option value="手动输入">手动输入</option>
+							<option value="地图找点">地图找点</option>
+						</select><br><br>
+					<!--地图找点-->
+					<button id="add_DisplayCoor" style="display:none;">添加坐标</button>
+					<button id="del_DisplayCoor" style="display:none;">清除坐标</button>
+					<input id="select_coordNum" type="number" min="1" max="2" value="1" style="width:30px;display:none;"/>
+					<p id="坐标1" style="text-align:left-side;line-height:20px;display:none;"></p>
+					<!--<hr id="水平线" style="height:1px;width:80%;border:none;border-top:1px dashed #0066CC;">-->
+					<p id="坐标2" style="text-align:left-side;line-height:20px;display:none;"></p>
+					<!--手动输入-->
+					<label id="lab_coord1" style="display:inline;">坐标1</label><br>
+					    <input id="coord1" style="width:90%;display:inline;"/>
+					<label id="lab_coord2" style="display:inline;">坐标2</label><br>
+					    <input id="coord2" type="string" style="width:90%;display:inline;"/>
+						
+					<button id="res_angle" style="display:inline;">结果：</button>
+					<p id="计算方位角" style="text-align:left-side;display:inline;">计算结果</p>
+					<hr style="color:rgb(255,69,0);size:2">
+				</div>
+			<!-- <div id="content" style="width:80%;height:500px;background-color:#EEEEEE;
+							float:left;text-align:center;line-height:500px;">
+				创建一个div展示地图-->
+			<div id="map" style="width: 85%;height: 540px;float:left"></div>
+		</div>
+			<div id="mouse-position" style="width:30%;height:20px;background-color:rgb(	255,215,0);text-align:left-side;float:left;"></div>
+			<div id="footer" style="width:60%;height:20px;background-color:rgb(	255,215,0);text-align:center;float:left;">
+			https://wangchengyin.github.io/ @汪承音
+				</div>
+			<div id="visite" style="width:10%;height:20px;background-color:rgb(	255,215,0);text-align:center;float:left;font-style:italic;">访问次数：</div>
+		</div>
+         <script>
+	
+			var mousePositionControl = new ol.control.MousePosition
+			({
+				coordinateFormat: ol.coordinate.createStringXY(4),
+				projection: 'EPSG:4326',
+				// comment the following two lines to have the mouse position
+				// be placed within the map.
+				className: 'custom-mouse-position',
+				target: document.getElementById('mouse-position'),
+				undefinedHTML: '&nbsp;'
+			});
+			var map = new ol.Map
+			({
+				controls: ol.control.defaults
+				({
+					attributionOptions: 
+					({
+						collapsible: false
+					})
+				}).extend([mousePositionControl]),
+				layers: 
+				[
+					new ol.layer.Tile
+					({
+						source: new ol.source.OSM()
+					})
+				],
+				target: 'map',
+				view: new ol.View
+				({
+					center: [12100000, 4500000],
+					zoom: 4
+				})
+			});
+			
+			//添加比例尺控件
+			map.addControl(new ol.control.ScaleLine());
+			//添加缩放控件
+			map.addControl(new ol.control.Zoom());
+			//添加缩放滑动控件
+			//map.addControl(new ol.control.ZoomSlider());
+			//添加缩放到当前视图滑动控件
+			map.addControl(new ol.control.ZoomToExtent());
+			//添加全屏控件
+			map.addControl(new ol.control.FullScreen());
+			//var guangzhou=ol.proj.fromLonLat([113.15,23.08]);
+			//添加地图鼠标控件
+			/*map.addControl(new ol.control.MousePosition
+			({
+				coordinateFormat: ol.coordinate.createStringXY(4),
+				projection: 'EPSG:4326',
+				className: 'custom-mouse-position',
+				target: document.getElementById('mouse-position'),
+				undefinedHTML: '&nbsp;'
+			}));*/
+			
+			var projectionSelect = document.getElementById('projection');
+			//addEventListener()方法用于向指定元素添加事件。
+			projectionSelect.addEventListener('change', 
+				function(event){
+					//event.target可获得触发事件的元素
+					mousePositionControl.setProjection(ol.proj.get(event.target.value));
+				});
+				//map.addControl(new ol.control.ScaleLine());
+			var precisionInput = document.getElementById('precision');
+			precisionInput.addEventListener('change', 
+				function(event){
+					var format = ol.coordinate.createStringXY(event.target.valueAsNumber);
+					mousePositionControl.setCoordinateFormat(format);
+				});
+				
+			//双击获取坐标	
+			document.getElementById("map").addEventListener("dblclick",dispalyCoord);
+			function dispalyCoord(){
+				//var element=document.getElementById("menu");
+				var coord = document.getElementById("mouse-position").innerHTML;
+				DisplayCoord=document.getElementById("select_coordNum").value;
+				document.getElementById("坐标"+(DisplayCoord)).innerHTML=coord;
+			}
+			//添加坐标按钮
+			var DisplayCoord=1;
+			document.getElementById("add_DisplayCoor").addEventListener("click",addCoord);
+			function addCoord(){
+				DisplayCoord=document.getElementById("select_coordNum").value;
+				document.getElementById("坐标"+DisplayCoord).innerHTML="坐标"+DisplayCoord;
+			}
+			//清除坐标按钮
+			document.getElementById("del_DisplayCoor").addEventListener("click",delCoord);
+			function delCoord(){
+				document.getElementById("坐标1").innerHTML="";
+				document.getElementById("坐标2").innerHTML="";
+			}
+			//***************************地图选择*************************************
+			var isHandSelect=1;
+			var comput_Select = document.getElementById('comp_model');
+			comput_Select.addEventListener('change', 
+				function(){
+				var v =this.options[this.options.selectedIndex].value;
+					/*event.target可获得触发事件的元素*/
+					if(v == "手动输入")
+					{
+						isHandSelect=1;
+						document.getElementById("lab_coord1").style.display="inline";
+						document.getElementById("lab_coord2").style.display="inline";
+						document.getElementById("coord1").style.display="inline";
+						//document.getElementById("水平线").style.display="inline";
+						document.getElementById("coord2").style.display="inline";
+						
+						document.getElementById("add_DisplayCoor").style.display="none";
+						document.getElementById("del_DisplayCoor").style.display="none";
+						document.getElementById("select_coordNum").style.display="none";
+						document.getElementById("坐标1").style.display="none";
+						document.getElementById("坐标2").style.display="none";
+						
+						document.getElementById("res_angle").style.display="inline";
+						document.getElementById("计算方位角").style.display="inline";
+					}
+					if(v == "地图找点")
+					{
+						isHandSelect=0;
+						document.getElementById("lab_coord1").style.display="none";
+						document.getElementById("lab_coord2").style.display="none";
+						document.getElementById("coord1").style.display="none";
+						//document.getElementById("水平线").style.display="none";
+						document.getElementById("coord2").style.display="none";
+						
+						document.getElementById("add_DisplayCoor").style.display="inline";
+						document.getElementById("del_DisplayCoor").style.display="inline";
+						document.getElementById("select_coordNum").style.display="inline";
+						document.getElementById("坐标1").style.display="inline";
+						document.getElementById("坐标2").style.display="inline";
+						
+						document.getElementById("res_angle").style.display="inline";
+						document.getElementById("计算方位角").style.display="inline";
+					}
+				});
+				
+				document.getElementById("res_angle").addEventListener("click",comput_angle);
+				function comput_angle()
+				{
+					var A_x=0,A_y=0,B_x=0,B_y=0;
+					if(isHandSelect==1)
+					{
+						var str_A=document.getElementById("coord1").value;
+						var arr_A=str_A.split(",");
+						A_x=arr_A[0];A_y=arr_A[1];
+					
+						var str_B=document.getElementById("coord2").value;
+						var arr_B=str_B.split(",");
+						B_x=arr_B[0];B_y=arr_B[1];
+						
+						if(A_x<B_x && A_y<B_y)
+						{
+							var res = Math.atan((B_x-A_x)/(B_y-A_y))*180.0/Math.PI;
+						}
+						else if(A_x<B_x && A_y>B_y)
+						{
+							var res = Math.atan((B_x-A_x)/(B_y-A_y))*180.0/Math.PI + 180.0;
+						}
+						else if((A_x>B_x && A_y>B_y))
+						{
+							var res = Math.atan((B_x-A_x)/(B_y-A_y))*180.0/Math.PI + 180.0;
+						}
+						else
+						{
+							var res = Math.atan((B_x-A_x)/(B_y-A_y))*180.0/Math.PI + 360.0;
+						}
+						document.getElementById("计算方位角").innerHTML=res;
+					}
+					if(isHandSelect==0)
+					{
+						var str_A=document.getElementById("坐标1").innerHTML;
+						var arr_A=str_A.split(",");
+							var arr_A_x=arr_A[0].split(">");var arr_A_y=arr_A[1].split("<");
+							A_x=arr_A_x[1];A_y=arr_A_y[0];
+						
+						var str_B=document.getElementById("坐标2").innerHTML;
+						var arr_B=str_B.split(",");
+							var arr_B_x=arr_B[0].split(">");var arr_B_y=arr_B[1].split("<");
+							B_x=arr_B_x[1];B_y=arr_B_y[0];
+						if(A_x<B_x && A_y<B_y)
+						{
+							var res = Math.atan((B_x-A_x)/(B_y-A_y))*180.0/Math.PI;
+						}
+						else if(A_x<B_x && A_y>B_y)
+						{
+							var res = Math.atan((B_x-A_x)/(B_y-A_y))*180.0/Math.PI + 180.0;
+						}
+						else if((A_x>B_x && A_y>B_y))
+						{
+							var res = Math.atan((B_x-A_x)/(B_y-A_y))*180.0/Math.PI + 180.0;
+						}
+						else
+						{
+							var res = Math.atan((B_x-A_x)/(B_y-A_y))*180.0/Math.PI + 360.0;
+						}
+						document.getElementById("计算方位角").innerHTML=res;
+					}
+				}
+			
+			</script>
+			<!--***************************网站访问统计************************************-->
+			<script type="text/javascript">
+				var caution=false
+				function setCookie(name,value,expires,path,domain,secure) 
+				{
+					var curCookie=name+"="+escape(value) +
+					((expires)?";expires="+expires.toGMTString() : "") +
+					((path)?"; path=" + path : "") +
+					((domain)? "; domain=" + domain : "") +
+					((secure)?";secure" : "")
+					if(!caution||(name + "=" + escape(value)).length <= 4000)
+					{
+						document.cookie = curCookie
+					}
+					else if(confirm("Cookie exceeds 4KB and will be cut!"))
+					{
+						document.cookie = curCookie
+					}
+				}
+				function getCookie(name) 
+				{
+					var prefix = name + "="
+					var cookieStartIndex = document.cookie.indexOf(prefix)
+					if (cookieStartIndex == -1)
+					{
+						return null
+					} 
+					var cookieEndIndex=document.cookie.indexOf(";",cookieStartIndex+prefix.length)
+					if(cookieEndIndex == -1)
+					{
+						cookieEndIndex = document.cookie.length
+					}
+					return unescape(document.cookie.substring(cookieStartIndex+prefix.length,cookieEndIndex))
+				}
+				function deleteCookie(name, path, domain) 
+				{
+					if(getCookie(name)) 
+					{
+						document.cookie = name + "=" + 
+						((path) ? "; path=" + path : "") +
+						((domain) ? "; domain=" + domain : "") +
+						"; expires=Thu, 01-Jan-70 00:00:01 GMT"
+					}
+				}
+				function fixDate(date) 
+				{
+					var base=new Date(0)
+					var skew=base.getTime()
+					if(skew>0)
+					{
+						date.setTime(date.getTime()-skew)
+					} 
+				}
+				var now=new Date()
+				fixDate(now)
+				now.setTime(now.getTime()+365 * 24 * 60 * 60 * 1000)
+				var visits = getCookie("counter")
+				if(!visits)
+				{
+					visits=1;
+				} 
+				else
+				{
+					visits=parseInt(visits)+1;
+				} 
+				setCookie("counter", visits, now)
+				//document.write("网站访问量：" + visits + " ！")
+				document.getElementById("visite").innerHTML="访问次数："+visits;
+			</script>
+    </body>
+    </html>
