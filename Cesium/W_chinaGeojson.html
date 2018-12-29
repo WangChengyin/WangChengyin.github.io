@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="description" content="Load GeoJSON or TopoJSON data and apply custom styling.">
+    <meta name="cesium-sandcastle-labels" content="Showcases, Tutorials, DataSources">
+    <title>Wcy's Cesium</title>
+    <script type="text/javascript" src="js/Sandcastle-header.js"></script>
+    <script type="text/javascript" src="js/require.js"></script>
+    <script type="text/javascript">
+    require.config({
+        baseUrl : 'Source',
+        waitSeconds : 60
+    });
+    </script>
+</head>
+<body class="sandcastle-loading" data-sandcastle-bucket="bucket-requirejs.html">
+<style>
+    @import url(css/bucket.css);
+</style>
+<div id="cesiumContainer" class="fullSize"></div>
+<div id="loadingOverlay"><h1>Loading...</h1></div>
+<div id="toolbar">日本各地人口统计</div>
+<script id="cesium_sandcastle_script">
+function startup(Cesium) {
+    'use strict';
+//Sandcastle_Begin
+var viewer = new Cesium.Viewer('cesiumContainer',{animation:false,timeline:false});
+
+//Example 1: 使用默认样式加载。
+Sandcastle.addDefaultToolbarButton('Default styling', function() {
+    viewer.dataSources.add(Cesium.GeoJsonDataSource.load('data/Japan.json'));
+});
+
+//Example 2: 使用基本样式加载。
+Sandcastle.addToolbarButton('Basic styling', function() {
+    viewer.dataSources.add(Cesium.GeoJsonDataSource.load('data/Japan.json', {
+        stroke: Cesium.Color.HOTPINK,
+        fill: Cesium.Color.PINK.withAlpha(0.5),
+        strokeWidth: 3
+    }));
+});
+
+//Example 3: 使用自定义样式加载。
+Sandcastle.addToolbarButton('Custom styling', function() {
+    //为随机数生成器播种以获得可重复的结果。
+    Cesium.Math.setRandomNumberSeed(0);
+
+    var promise = Cesium.GeoJsonDataSource.load('data/Japan.json');
+    promise.then(function(dataSource) {
+        viewer.dataSources.add(dataSource);
+
+        //获取实体数组
+        var entities = dataSource.entities.values;
+
+        var colorHash = {};
+        for (var i = 0; i < entities.length; i++) {
+            //对于每个实体，根据状态名称创建随机颜色。
+			//有些州有多个实体，因此我们将颜色存储在哈希中，
+			//以便我们对整个州使用相同的颜色。
+            var entity = entities[i];
+            var name = entity.name;
+            var color = colorHash[name];
+            if (!color) {
+                color = Cesium.Color.fromRandom({
+                    alpha : 1.0
+                });
+                colorHash[name] = color;
+            }
+
+            //将多边形材质设置为我们的随机颜色。
+            entity.polygon.material = color;
+            //删除轮廓。
+            entity.polygon.outline = false;
+
+            //根据状态的总体挤出多边形。
+			//每个实体都存储它所创建的GeoJSON特征的属性。由于人口数量庞大，我们除以50。
+            entity.polygon.extrudedHeight = entity.properties.Population/20.0; /// 
+        }
+    }).otherwise(function(error){
+        //显示加载时遇到的任何错误。
+        window.alert(error);
+    });
+});
+
+//切换演示时重置场景。
+Sandcastle.reset = function() {
+    viewer.dataSources.removeAll();
+
+    //将相机设置为美国居中倾斜视图，然后切换回以世界坐标移动。
+    viewer.camera.lookAt(Cesium.Cartesian3.fromDegrees(123.0, 40.0), new Cesium.Cartesian3(0.0, -4790000.0, 3930000.0));
+    viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+};
+//Sandcastle_End
+    Sandcastle.finishedLoading();
+}
+if (typeof Cesium !== 'undefined') {
+    startup(Cesium);
+} else if (typeof require === 'function') {
+    require(['Cesium'], startup);
+}
+</script>
+</body>
+</html>
