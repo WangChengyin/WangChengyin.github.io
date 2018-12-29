@@ -40,6 +40,7 @@
 			margin-bottom: 5px;
 		}
 			#menu{	
+				z-index: 2;
 				float:left; 
 				width:243px; 
 				height:480px; 
@@ -48,8 +49,107 @@
 				/*background-image: url("image/nature11.jpg");*/
 				border: 1px solid;
 				border-color: #008000;
-      		  background: rgba(225,225,225,0.5);
+      		  	background: rgba(225,225,225,0.5);
+				perspective:20000px;
 			}
+			.box{
+				margin-left: 30px;
+			width:180px;
+			height:180px;
+			border:1px solid transparent;
+			box-sizing: border-box;
+			position:relative;
+			transform-style:preserve-3d;
+			/*transform:rotateX(30deg) rotateY(30deg);*/
+			animation: rotate 10s linear infinite;
+		}
+		@keyframes rotate{
+			100%{
+				transform:rotatex(360deg) rotatey(360deg) rotatez(360deg);
+			}
+		}
+
+		.box-page{
+			width: 180px;
+			height: 180px;
+			position:absolute;
+			box-sizing: border-box;
+			transform-style:preserve-3d;
+		}
+
+
+		.top{
+			transform: translateZ(90px);
+		}
+		.bottom{
+			transform: translateZ(-90px) rotateX(180deg);
+		}
+		.right{
+			transform: translateX(90px) rotateY(90deg);
+		}
+		.left{
+			transform: translateX(-90px) rotateY(-90deg);
+		}
+		.after{
+			transform: translateY(-90px) rotateX(90deg);
+		}
+		.before{
+			transform: translateY(90px) rotateX(-90deg);
+		}
+
+
+		.box-page div:first-child,.box-page div:nth-child(3),.box-page div:nth-child(5),.box-page div:nth-child(7),.box-page div:nth-child(9){
+			transform: rotateY(0deg);
+		    animation: rotatey 6s linear infinite;
+		}
+
+
+		@keyframes rotatey{
+			20%{
+				transform: rotateY(0deg);
+				background-size: 300px 300px;
+			}
+			40%{
+				/*background-image: url("img/img.jpg");*/
+				transform: rotateY(540deg);
+				background-size: 100px 100px;
+			}
+			60%{
+				/*background-image: url("img/img.jpg");*/
+				transform: rotateY(540deg);
+				background-size: 100px 100px;
+			}
+			80%{
+				transform: rotateY(0deg);
+				background-size:300px 300px;
+			}
+		}
+
+		.box-page div:nth-child(2),.box-page div:nth-child(4),.box-page div:nth-child(6),.box-page div:nth-child(8){
+			transform:rotateX(0deg);
+		    animation: rotatex 6s linear infinite;
+		}
+
+		@keyframes rotatex{
+			20%{
+				transform: rotateX(0deg);
+				background-size: 300px 300px;
+			}
+			40%{
+				/*background-image: url("img/img.jpg");*/
+				transform: rotateX(540deg);
+				background-size: 100px 100px;
+			}
+			60%{
+				/*background-image: url("img/img.jpg");*/
+				transform: rotateX(540deg);
+				background-size: 100px 100px;
+			}
+			80%{
+				transform: rotateX(0deg);
+				background-size: 300px 300px;
+			}
+		}
 			#content{
 				float:left; 
 				width:693px; 
@@ -59,7 +159,9 @@
 				/*background-image: url("image/nature22.jpg");*/
 				border: 1px solid;
 				border-color: #008000;
-    	 	   background: rgba(225,225,225,0.5);
+    	 	   	background: rgba(225,225,225,0.5);
+
+    	 	  	
 			}
 				#content11{
 					/*clear:both;*/
@@ -69,9 +171,35 @@
 					margin-right:1px;
 					border: 1px solid;
 					position: relative;
+					border-color: #008000;
 				}#img11{
 					position: absolute;
 					bottom: -4px;
+				}
+				.para{
+					position: absolute;
+					bottom: 15px;
+					left: 80px;
+					/*color: red;*/
+					font-size:42px;
+					font-family: "楷体";
+				}
+				.a_para:link {
+					color: #FFFF00;
+					text-decoration: none;
+				}
+				.a_para:visited {
+					text-decoration: none;
+					color: 	#00008B;
+				}
+				.a_para:hover {
+					text-decoration: none;
+					font-size: 102%;
+					color: #FF0000;
+				}
+				.a_para:active {
+					text-decoration: none;
+					color: #03c;
 				}
 				#content12{
 					/*clear: both;*/
@@ -80,6 +208,7 @@
 					height:230px;
 					border: 1px solid;
 					position: relative;
+					border-color: #008000;
 				}#img12{
 					position: absolute;
 					bottom: -4px;
@@ -93,6 +222,7 @@
 					margin-right:1px;
 					border: 1px solid;
 					position: relative;
+					border-color: #008000;
 				}#img21{
 					position: absolute;
 					bottom: -4px;
@@ -104,6 +234,7 @@
 					height:230px;
 					margin-top: 10px;
 					border: 1px solid;
+					border-color: #008000;
 				}
 			#sidebar{
 				float:left; 
@@ -120,20 +251,21 @@
 				font-size:20px;
 				line-height: 2em;
 			}
-			#sidebar a:link {
+			#sidebar 
+				.a_ul:link {
 					color: #FFFF00;
 					text-decoration: none;
 				}
-				a:visited {
+				.a_ul:visited {
 					text-decoration: none;
 					color: 	#00008B;
 				}
-				a:hover {
-					text-decoration: underline;
+				.a_ul:hover {
+					text-decoration: none;
 					font-size: 120%;
 					color: #FF0000;
 				}
-				a:active {
+				.a_ul:active {
 					text-decoration: none;
 					color: #03c;
 				}

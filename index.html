@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>181227WebSite</title>
+	<title>Wcy网站</title>
 	<link rel="stylesheet" href="css/style.css">
 
 </head>
@@ -10,26 +10,42 @@
 <body>
 	<div id="container">
 		<div id="header">
-			<h1>欢迎来到我的网站</h1>
+			<h1>欢迎来到Wcy的网站</h1>
 		</div>
 		<div id="main">
 			<div id="menu">
+				<div class="box">
+					<div class="top box-page"></div>
+					<div class="bottom box-page"></div>
+					<div class="left box-page"></div>
+					<div class="right box-page"></div>
+					<div class="before box-page"></div>
+					<div class="after box-page"></div>
+				</div>
 			</div>
 			<div id="content">
 				<div id="content11">
 					<div id="img11">
 						<a href="MyOL/MyOL.html" target="_blank"><img src="image/layer.jpg" alt="w3c"></a>
 					</div>
+					<div class="para">
+						<a href="MyOL/MyOL.html" target="_blank" class="a_para">My OpenLayer</a>
+					</div>
 				</div>
 				<div id="content12">
 					<div id="img12">
 						<a href="https://github.com/WangChengyin/WangChengyin.github.io" target="_blank"><img src="image/Cesium.jpg" alt="w3c"></a>
-						
+					</div>
+					<div class="para">
+						<a href="https://github.com/WangChengyin/WangChengyin.github.io" target="_blank" class="a_para">My Cesium</a>
 					</div>
 				</div>
 				<div id="content21">
 					<div id="img21">
 						<a href="https://blog.csdn.net/qq_29406323" target="_blank"><img src="image/CSDN.jpg" alt="w3c"></a>
+					</div>
+					<div class="para">
+						<a href="https://blog.csdn.net/qq_29406323" target="_blank" class="a_para">My CSDN</a>
 					</div>
 				</div>
 				<div id="content22">
@@ -39,16 +55,37 @@
 			<div id="sidebar">
 				<h4><span class="titleSpan">不错的资源</span></h4>
 				<ul class = "ul">
-					<li><a href="http://open.163.com/special/opencourse/positivepsychology.html" target="_blank"><span class="aSpan">哈佛大学公开课</span>：幸福课</a></li>
-					<li><a href="http://www.runoob.com/" target="_blank"><span class="aSpan">菜鸟教程</span>：学的不仅是技术</a></li>
-					<li><a href="http://openlayers.org/" target="_blank"><span class="aSpan">OpenLayer</span>：最好的开源地图引擎</a></li>
-					<li><a href="https://www.icourse163.org/" target="_blank"><span class="aSpan">中国大学MOOC</span>：好的大学没有围墙</a></li>
-					<li><a href="https://www.oschina.net/" target="_blank"><span class="aSpan">开源中国</span>：国内最大开源技术社区</a></li>
-					<li><a href="https://www.jb51.net/" target="_blank"><span class="aSpan">脚本之家</span>：脚本技术爱好者的“家”</a></li>
+					<li><a href="http://open.163.com/special/opencourse/positivepsychology.html" target="_blank" class="a_ul"><span class="aSpan">哈佛大学公开课</span>：幸福课</a></li>
+					<li><a href="http://www.runoob.com/" target="_blank" class="a_ul"><span class="aSpan">菜鸟教程</span>：学的不仅是技术</a></li>
+					<li><a href="http://openlayers.org/" target="_blank" class="a_ul"><span class="aSpan">OpenLayer</span>：最好的开源地图引擎</a></li>
+					<li><a href="https://www.icourse163.org/" target="_blank" class="a_ul"><span class="aSpan">中国大学MOOC</span>：好的大学没有围墙</a></li>
+					<li><a href="https://www.oschina.net/" target="_blank" class="a_ul"><span class="aSpan">开源中国</span>：国内最大开源技术社区</a></li>
+					<li><a href="https://www.jb51.net/" target="_blank" class="a_ul"><span class="aSpan">脚本之家</span>：脚本技术爱好者的“家”</a></li>
 				</ul>
 			</div>
 		</div>
 		<div id="footer"></div>
 	</div>
+
+	<script type="text/javascript">
+	
+	var arr = document.querySelectorAll(".box>div");
+	for(var n = 0;n<arr.length;n++){
+		for(var i=0;i<3;i++){
+			for(var j=0;j<3;j++){
+				var divs = document.createElement("div");
+				divs.style.cssText = "width:60px;height:60px;border: 1px solid #fff;position:absolute;box-sizing:border-box;background-image:url(image/mofang"+n+".jpg);background-size: 180px 180px;";
+				arr[n].appendChild(divs);
+
+				// 改变每一个div的位置
+				divs.style.left = 60*j+"px";
+				divs.style.top = 60*i+"px";
+				// 改变背景图相应的位置
+				divs.style.backgroundPositionX = -j*60+"px";
+				divs.style.backgroundPositionY = -i*60+"px";		
+			}
+		}
+	}
+	</script>
 </body>
 </html>
