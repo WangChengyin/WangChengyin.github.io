@@ -22,7 +22,7 @@
 </style>
 <div id="cesiumContainer" class="fullSize"></div>
 <div id="loadingOverlay"><h1>Loading...</h1></div>
-<div id="toolbar">日本各地人口统计</div>
+<div id="toolbar">日本各地人口统计：</div>
 <script id="cesium_sandcastle_script">
 function startup(Cesium) {
     'use strict';
@@ -30,12 +30,12 @@ function startup(Cesium) {
 var viewer = new Cesium.Viewer('cesiumContainer',{animation:false,timeline:false});
 
 //Example 1: 使用默认样式加载。
-Sandcastle.addDefaultToolbarButton('Default styling', function() {
+Sandcastle.addDefaultToolbarButton('默认加载', function() {
     viewer.dataSources.add(Cesium.GeoJsonDataSource.load('data/Japan.json'));
 });
 
 //Example 2: 使用基本样式加载。
-Sandcastle.addToolbarButton('Basic styling', function() {
+Sandcastle.addToolbarButton('基本样式加载', function() {
     viewer.dataSources.add(Cesium.GeoJsonDataSource.load('data/Japan.json', {
         stroke: Cesium.Color.HOTPINK,
         fill: Cesium.Color.PINK.withAlpha(0.5),
@@ -44,7 +44,7 @@ Sandcastle.addToolbarButton('Basic styling', function() {
 });
 
 //Example 3: 使用自定义样式加载。
-Sandcastle.addToolbarButton('Custom styling', function() {
+Sandcastle.addToolbarButton('自定义加载', function() {
     //为随机数生成器播种以获得可重复的结果。
     Cesium.Math.setRandomNumberSeed(0);
 
