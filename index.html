@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Wcy的网站</title>
+	<title>Wcy网站</title>
 	<link rel="stylesheet" href="css/style.css">
 
 </head>
-
 <body>
 	<div id="container">
 		<div id="header">
 			<h1>欢迎来到Wcy的网站</h1>
+			<button id="btnFace">换肤</button>>
 		</div>
 		<div id="main">
 			<div id="menu">
@@ -67,8 +67,31 @@
 		<div id="footer"></div>
 	</div>
 
+
 	<script type="text/javascript">
-	
+	//背景图片数组
+	var imgs = ["image/container0.jpg","image/container1.jpg","image/container2.jpg","image/container3.jpg","image/container4.jpg","image/container5.jpg","image/container6.jpg","image/container7.jpg","image/container8.jpg","image/container9.jpg","image/container10.jpg","image/container11.jpg","image/container12.jpg","image/container13.jpg","image/container14.jpg","image/container15.jpg"]
+	//按钮触发函数
+	function changeFace()
+	{
+		var couunt = count();
+		var bkGround = document.getElementById("container");
+		bkGround.style.background = "url("+imgs[couunt]+")";
+	}
+	//计数器
+	function count(){
+        count.counter = count.counter||0;
+        count.counter++;
+        if(count.counter==15)
+        {
+        	count.counter=0;
+        }
+        return count.counter;
+    } 
+	//按钮事件
+	var face = document.getElementById("btnFace");
+	face.addEventListener('click',changeFace);
+	//魔方
 	var arr = document.querySelectorAll(".box>div");
 	for(var n = 0;n<arr.length;n++){
 		for(var i=0;i<3;i++){

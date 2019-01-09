@@ -9,7 +9,7 @@
 	#container {
 		margin:0 auto; 
 		width:1200px; 
-		background-image: url("../image/container.jpg") ;
+		background-image: url("../image/container0.jpg") ;
 		position: relative;
 		/*z-index: -1;*/
 	}
@@ -30,6 +30,15 @@
 				font-family: "仿宋";
 				color: #DC143C;
 				letter-spacing: 10px;
+			}
+			#btnFace
+			{
+				width:50px;
+				height: 25px;
+				right: 220px;
+				top:35px;
+				position: absolute;
+				background-color: #FF4500;
 			}
 		#main{
 			z-index: 1;
